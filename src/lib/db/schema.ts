@@ -30,9 +30,9 @@ export const feed_follows = pgTable("feed_follows", {
 export const posts = pgTable("posts",{
     id: uuid("id").primaryKey().defaultRandom().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull() ,
-    updatedAt: timestamp("created_at").defaultNow().notNull().$onUpdate(() => new Date()),
+    updatedAt: timestamp("updated_at").defaultNow().notNull().$onUpdate(() => new Date()),
     title: text("title").notNull(),
-    url: text("url").notNull().unique(),
+    url: text("url").notNull(),
     description: text("description"),
     publishedAt: timestamp("published_at"),
     feedId: uuid("feed_id").notNull().references(() => feeds.id, {onDelete: "cascade"})

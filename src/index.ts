@@ -9,7 +9,7 @@ import {Help,
         users, 
         aggFetch,
         listFeeds,} from './commands/commands.js';
-import { middlewareLoggedIn, addFeedHandler, followHandler, followingHandler, unfollowHandler } from './commands/middleware.js';
+import { middlewareLoggedIn, addFeedHandler, followHandler, followingHandler, unfollowHandler, browseHandler } from './commands/middleware.js';
 import { registry } from './commands/commands.js';
 
 
@@ -27,6 +27,7 @@ async function main(): Promise<void> {
     registerCommand(registry, "follow", middlewareLoggedIn(followHandler));
     registerCommand(registry, "following", middlewareLoggedIn(followingHandler));
     registerCommand(registry, "unfollow", middlewareLoggedIn(unfollowHandler));
+    registerCommand(registry, "browse", middlewareLoggedIn(browseHandler))
 
     const command: string = process.argv[2];
     if (!command) {

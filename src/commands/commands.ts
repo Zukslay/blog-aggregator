@@ -1,8 +1,8 @@
 import {readConfig, setUser} from '../config.js';
-import {createUser, getUser} from '../lib/db/queries/users.js';
+import {createUser, getUser} from '../lib/db/queries/users/users.js';
+import { getUsers } from '../lib/db/queries/users/getusers.js';
 import {truncateUsers, truncateFeeds} from '../lib/db/queries/delete.js';
-import {getUsers } from '../lib/db/queries/getusers.js';
-import {getFeeds } from '../lib/db/queries/getfeeds.js';
+import {getFeeds } from '../lib/db/queries/feeds/getfeeds.js';
 import { scrapeFeeds, records } from '../lib/db/queries/fetchfeedco.js';
 
 
@@ -20,7 +20,8 @@ const descriptions: Record<string, string> = {
     "addfeed": "addfeed for current user. required feedname and feedurl",
     "follow": "follow a feed for the current user. required feed url",
     "following": "prints all feeds followed by current user",
-    "unfollow": "unfollow a feed for the current user. required feed url"
+    "unfollow": "unfollow a feed for the current user. required feed url",
+    "browse": "shows posts from a feed followed by the user, limit command optional"
 }
 
 export type CommandsRegistry = Record<string, CommandHandler>;
@@ -77,7 +78,7 @@ export async function users(): Promise<void> {
 
 export async function aggFetch(timeBetweenReqs: string): Promise<void> {
     if (!timeBetweenReqs){
-        throw new Error("time required")
+        throw new Error("time required for agg command")
     }
     const timeMs = parseDurationMs(timeBetweenReqs);
     console.log(`Collecting feeds every ${timeBetweenReqs}`)

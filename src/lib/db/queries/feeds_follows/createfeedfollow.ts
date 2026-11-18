@@ -1,5 +1,5 @@
-import { users, feeds, feed_follows } from "../schema.js";
-import { db } from "../index.js";
+import { users, feeds, feed_follows } from "../../schema.js";
+import { db } from "../../index.js";
 import { eq } from "drizzle-orm";
 
 type RecordFF1 = {

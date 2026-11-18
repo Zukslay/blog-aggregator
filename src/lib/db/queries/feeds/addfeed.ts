@@ -1,6 +1,6 @@
-import { feeds, users } from "../schema.js";
-import { db } from "../index.js";
-import { readConfig } from "../../../config.js";
+import { feeds, users } from "../../schema.js";
+import { db } from "../../index.js";
+import { readConfig } from "../../../../config.js";
 import { eq } from "drizzle-orm";
 
 export type Feed = typeof feeds.$inferSelect;

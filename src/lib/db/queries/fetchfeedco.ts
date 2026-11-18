@@ -1,7 +1,8 @@
 import { feeds } from "../schema.js";
 import { db } from "../index.js";
 import { eq, sql } from "drizzle-orm";
-import { fetchRSSFeed, RSSFeed } from "../../../fetchRSS.js";
+import { fetchRSSFeed, RSSFeed, RSSItem } from "../../../fetchRSS.js";
+import { createPost } from "./posts/createpost.js";
 
 export type RecordFF2 = typeof feeds.$inferSelect;
 export const records: RecordFF2[] = [];
@@ -33,7 +34,10 @@ export async function scrapeFeeds(records: RecordFF2[]): Promise<void> {
     const data: RSSFeed = await fetchRSSFeed(feed.url)
     markFeedFetched(feed.id)
     for (const item of data.channel.item){
-        console.log(`${item.title}\n`)
+        createPost(item.title, item.link, feed.id ,item.description, parseDate(item.pubDate));
     }
-    
+}
+function parseDate(dateStr: string): Date | null {
+  const date: Date = new Date(dateStr);
+  return isNaN(date.getTime()) ? null : date;
 }

@@ -1,10 +1,11 @@
 import { CommandHandler } from "./commands.js";
 import { readConfig } from "../config.js";
-import { getUserIdByName } from "../lib/db/queries/getusers.js";
-import { addFeedQuery } from "../lib/db/queries/addfeed.js";
-import { getFeedIdByUrl, getFeedFollowsForUser } from "../lib/db/queries/getfeeds.js";
-import { createFeedFollow } from "../lib/db/queries/createfeedfollow.js";
-import { deleteFeedFollow } from "../lib/db/queries/deletefeedfollow.js";
+import { getUserIdByName } from "../lib/db/queries/users/getusers.js";
+import { addFeedQuery } from "../lib/db/queries/feeds/addfeed.js";
+import { getFeedIdByUrl, getFeedFollowsForUser } from "../lib/db/queries/feeds/getfeeds.js";
+import { createFeedFollow } from "../lib/db/queries/feeds_follows/createfeedfollow.js";
+import { deleteFeedFollow } from "../lib/db/queries/feeds_follows/deletefeedfollow.js";
+import { getPostsForUser } from "../lib/db/queries/posts/createpost.js";
 
 
 type UserCommandHandler = (
@@ -69,4 +70,16 @@ export async function unfollowHandler(userId: string, url: string): Promise<void
         throw new Error("url required for unfollow command")
     }
     await deleteFeedFollow(url, readConfig().currentUserName)
+}
+
+export async function browseHandler(userId: string, limit: string = "2"): Promise<void> {
+    if (Number(limit) < 1){
+        throw new Error("limit parameter cant be less than 1")
+    }
+    const posts = await getPostsForUser(userId, Number(limit));
+
+    for (let post of posts){
+        console.log(`${post.title} - url: ${post.url}`);
+        console.log(post.description)
+    }
 }

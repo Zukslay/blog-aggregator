@@ -1,5 +1,5 @@
-import { users, feeds, feed_follows } from "../schema.js";
-import { db } from "../index.js";
+import { users, feeds, feed_follows } from "../../schema.js";
+import { db } from "../../index.js";
 import { eq ,and} from "drizzle-orm";
 
 export async function deleteFeedFollow(feedUrl: string, userName: string): Promise<void> {
